@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Sorting Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background-color: #f9f9f9;
+    }
+
+    .sort-section {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    select {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .product-card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      width: 200px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .product-card h3 {
+      margin: 0 0 0.5rem;
+    }
+
+    .product-card p {
+      font-weight: bold;
+      color: #2a9d8f;
+    }
+  </style>
+</head>
+<body>
+
+  <section class="sort-section">
+    <label for="sort">Sort by:</label>
+    <select id="sort">
+      <option value="default">Default</option>
+      <option value="price-low-high">Price: Low to High</option>
+      <option value="price-high-low">Price: High to Low</option>
+      <option value="name-asc">Name: A-Z</option>
+      <option value="name-desc">Name: Z-A</option>
+    </select>
+  </section>
+
+  <section id="product-list" class="product-list">
+  
+  </section>
+
+  <script>
+    const sortSelect = document.getElementById("sort");
+    const productList = document.getElementById("product-list");
+
+    const products = [
+      { name: "Tent Alpha", price: 149.99 },
+      { name: "Backpack Pro", price: 89.99 },
+      { name: "Sleeping Bag Z", price: 59.99 },
+      { name: "Hiking Boots", price: 129.99 },
+    ];
+
+    function displayProducts(arr) {
+      productList.innerHTML = "";
+      arr.forEach(product => {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>$${product.price.toFixed(2)}</p>
+        `;
+        productList.appendChild(card);
+      });
+    }
+
+    function sortProducts(criteria) {
+      const sorted = [...products];
+      switch (criteria) {
+        case "price-low-high":
+          sorted.sort((a, b) => a.price - b.price);
+          break;
+        case "price-high-low":
+          sorted.sort((a, b) => b.price - a.price);
+          break;
+        case "name-asc":
+          sorted.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "name-desc":
+          sorted.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        default:
+         
+          break;
+      }
+      displayProducts(sorted);
+    }
+
+    sortSelect.addEventListener("change", (e) => {
+      sortProducts(e.target.value);
+    });
+    displayProducts(products);
+  </script>
+
+</body>
+</html>
